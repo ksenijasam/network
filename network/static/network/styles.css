@@ -1,0 +1,32 @@
+body {
+    margin: auto;  
+    padding: 0 40px;
+}
+
+.center-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.width-90 {
+    width: 90%;
+}
+
+.width-100 {
+    width: 100%;
+}
+
+.margin-top-40 {
+    margin-top: 40px;
+}
+
+.border {
+    border: 1px solid rgb(160, 155, 155);
+}
+
+.post-button {
+    float: right; 
+    margin-right: 15px; 
+    margin-bottom: 5px;
+}
