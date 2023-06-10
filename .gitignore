@@ -1,0 +1,4 @@
+db.sqlite3
+network/__pycache__/
+network/migrations/
+network/__pycache__/models.cpython-311.pyc
