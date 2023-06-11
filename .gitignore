@@ -4,3 +4,4 @@ network/migrations/
 network/__pycache__/models.cpython-311.pyc
 network/__pycache__/admin.cpython-311.pyc
 network/__pycache__/views.cpython-311.pyc
+network/__pycache__/urls.cpython-311.pyc

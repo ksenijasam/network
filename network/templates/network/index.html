@@ -3,12 +3,17 @@
 {% block body %}
     <div class="row center-content">
         <div class="col-12 margin-top-40 border">
-            <h2>New Post</h2>
-            <textarea class="width-100" rows="5"></textarea>
+            <form action="{% url 'save_post' %}" method="post">
 
-            <div>
+                {% csrf_token %}
+
+                <h2>New Post</h2>
+                <textarea class="width-100" rows="5" name="content"></textarea>
+
+                
                 <button class="btn btn-info post-button" type="submit">Post</button>
-            </div>
+
+            </form>
         </div>
     </div>
 {% endblock %}
