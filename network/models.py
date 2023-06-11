@@ -17,7 +17,6 @@ class Post(models.Model):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'user_profile', null = True)
-    no_followers = models.IntegerField(default = 0)
 
     def __str__(self):
         return f"ID: {self.pk}, user: {self.user}"
