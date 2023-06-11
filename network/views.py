@@ -3,6 +3,9 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.core import serializers
+
+from django.http import HttpResponse, JsonResponse, Http404
 
 from .models import User, UserProfile, Post
 
@@ -72,12 +75,23 @@ def save_post(request):
     if request.method == "POST":
         content = request.POST["content"]
 
+        try:
+            post = Post()
+            post.user = request.user
+            post.content = content
 
-        post = Post()
-        post.user = request.user
-        post.content = content
+            post.save()
 
-        post.save()
+            return render(request, "network/index.html")
+        except Exceptions as e:
+            raise e  #handle error logic
 
-        return render(request, "network/index.html")
 
+def get_all_posts(request):
+    try:
+        all_posts = Post.objects.all()
+        all_posts = serializers.serialize('json', all_posts)
+        
+        return HttpResponse(all_posts)
+    except:
+        raise Http404('Could not get any posts.')
