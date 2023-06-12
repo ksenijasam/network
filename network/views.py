@@ -11,7 +11,14 @@ from .models import User, UserProfile, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    try: 
+        all_posts = Post.objects.all().order_by('-date_time')
+
+        return render(request, "network/index.html", {
+            'all_posts': all_posts,
+        })
+    except:
+        return render(request, "network/index.html")
 
 
 def login_view(request):
@@ -82,16 +89,20 @@ def save_post(request):
 
             post.save()
 
-            return render(request, "network/index.html")
-        except Exceptions as e:
+            return HttpResponseRedirect(reverse("index"))
+        except:
             raise e  #handle error logic
 
 
 def get_all_posts(request):
     try:
         all_posts = Post.objects.all()
-        all_posts = serializers.serialize('json', all_posts)
+
+        return render(request, "network/index.html", {
+                'all_posts': all_posts,
+        })
+        # all_posts = serializers.serialize('json', all_posts)
         
-        return HttpResponse(all_posts)
+        # return HttpResponse(all_posts)
     except:
         raise Http404('Could not get any posts.')
