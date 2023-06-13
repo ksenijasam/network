@@ -20,10 +20,15 @@
             <!-- <div id="all_posts_data"></div> -->
 
             {% for post in all_posts %}
-                <div class="border" style="margin-bottom: 20px; padding: 20px">
+                <div class="border margin-padding-20">
                     <div class="row">
                         <div class="col-10">
-                            {{ post.user }}
+                            {{ post.user__username }}
+                        </div>
+                        <div class="col-2">
+                            <div class="float-right">
+                                💓 {{post.likes_count}} 
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -31,7 +36,9 @@
                             {{ post.content }}
                         </div>
                         <div class="col-2">
-                            {{ post.date_time | date:"d.m.y H:i"}}
+                            <div class="float-right">
+                                {{ post.date_time | date:"d.m.y H:i"}}
+                            </div>
                         </div>
                     </div>
                 </div>

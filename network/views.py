@@ -4,15 +4,22 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.core import serializers
+from django.db.models import Count
 
 from django.http import HttpResponse, JsonResponse, Http404
 
-from .models import User, UserProfile, Post
+from .models import User, UserProfile, Post, Like
 
 
 def index(request):
     try: 
         all_posts = Post.objects.all().order_by('-date_time')
+
+        # likes = Like.objects.select_related('post').all()
+        # likes = Post.objects.prefetch_related('liked_post')
+
+        posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post'))
+        all_posts = posts_with_likes_count.values('id', 'user__username', 'content', 'date_time', 'likes_count')
 
         return render(request, "network/index.html", {
             'all_posts': all_posts,

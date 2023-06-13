@@ -33,5 +33,9 @@ body {
 
 .float-right {
     float: right;
-    margin-right: 20px;
+}
+
+.margin-padding-20 {
+    margin-bottom: 20px; 
+    padding: 20px;
 }
