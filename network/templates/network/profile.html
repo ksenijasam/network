@@ -1,0 +1,55 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+    <div class="margin-top-40">
+        <div class="row">
+            <div class="col-10">
+                <h2>{{ user }}</h2>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-success">Follow</button>
+                <button class="btn btn-info">Unfollow</button>
+            </div>
+        </div>
+
+        <div class="row margin-top-40">
+            <div class="col-10">
+                {% for post in user_posts %}
+                    <div class="border margin-padding-20">
+                        <div class="row">
+                            <div class="col-10"></div>
+                            <div class="col-2">
+                                <div class="float-right">
+                                    💓 {{post.likes_count}} 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                {{ post.content }}
+                            </div>
+                            <div class="col-2">
+                                <div class="float-right">
+                                    {{ post.date_time | date:"d.m.y H:i"}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-2">
+                <div>
+                    <span>Following: {{ following }}</span> 
+                    <span>Followers: {{ followers }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+    </div>
+
+
+{% endblock %}

@@ -8,7 +8,7 @@ from django.db.models import Count
 
 from django.http import HttpResponse, JsonResponse, Http404
 
-from .models import User, UserProfile, Post, Like
+from .models import User, UserProfile, Post, Like, Following
 
 
 def index(request):
@@ -18,7 +18,7 @@ def index(request):
         # likes = Like.objects.select_related('post').all()
         # likes = Post.objects.prefetch_related('liked_post')
 
-        posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post'))
+        posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post')).order_by('-date_time')
         all_posts = posts_with_likes_count.values('id', 'user__username', 'content', 'date_time', 'likes_count')
 
         return render(request, "network/index.html", {
@@ -113,3 +113,22 @@ def get_all_posts(request):
         # return HttpResponse(all_posts)
     except:
         raise Http404('Could not get any posts.')
+
+def profile(request, id):
+    try:
+        user = User.objects.get(pk = id)
+
+        following = Following.objects.filter(user = id).count()
+        followers = Following.objects.filter(user_follows = id).count()
+
+        posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post')).order_by('-date_time')
+        user_posts = posts_with_likes_count.values('id', 'user__username', 'content', 'date_time', 'likes_count')
+
+        return render(request, "network/profile.html", {
+            'user': user,
+            'following': following,
+            'followers': followers,
+            'user_posts': user_posts
+        })
+    except User.DoesNotExist:
+        raise Http404('Could not load user profile.') 
