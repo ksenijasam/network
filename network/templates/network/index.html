@@ -23,7 +23,7 @@
                 <div class="border margin-padding-20">
                     <div class="row">
                         <div class="col-10">
-                            <a href="{% url 'profile' post.user__pk %}">{{ post.user__username }}</a>
+                            <a href="{% url 'profile' post.user__pk 'None' %}">{{ post.user__username }}</a>
                         </div>
                         <div class="col-2">
                             <div class="float-right">

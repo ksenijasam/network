@@ -8,8 +8,15 @@
                 <h2>{{ user }}</h2>
             </div>
             <div class="col-2">
-                <button class="btn btn-success">Follow</button>
-                <button class="btn btn-info">Unfollow</button>
+                {% if not its_user %} 
+                    <form action="{% url 'profile' user.pk 'True' %}" method="post">
+                        <button class="btn btn-success" type="submit">Follow</button>
+                    </form>
+
+                    <form action="{% url 'profile' user.pk 'False' %}" method="post">
+                        <button class="btn btn-info" type="submit">Unfollow</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
 

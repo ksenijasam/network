@@ -19,7 +19,7 @@ def index(request):
         # likes = Post.objects.prefetch_related('liked_post')
 
         posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post')).order_by('-date_time')
-        all_posts = posts_with_likes_count.values('id', 'user__username', 'content', 'date_time', 'likes_count')
+        all_posts = posts_with_likes_count.values('id', 'user__username', 'user__pk', 'content', 'date_time', 'likes_count')
 
         return render(request, "network/index.html", {
             'all_posts': all_posts,
@@ -114,8 +114,13 @@ def get_all_posts(request):
     except:
         raise Http404('Could not get any posts.')
 
-def profile(request, id):
+def profile(request, id, follow = None):
     try:
+        its_user = False
+
+        if(request.user.pk == id):
+            its_user = True
+        
         user = User.objects.get(pk = id)
 
         following = Following.objects.filter(user = id).count()
@@ -126,6 +131,7 @@ def profile(request, id):
 
         return render(request, "network/profile.html", {
             'user': user,
+            'its_user': its_user,
             'following': following,
             'followers': followers,
             'user_posts': user_posts
