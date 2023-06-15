@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.core import serializers
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse, JsonResponse, Http404
 
@@ -150,3 +151,12 @@ def profile(request, id, follow = None):
         })
     except User.DoesNotExist:
         raise Http404('Could not load user profile.') 
+
+@login_required
+def following(request):
+    try:
+        following_user_ids = Following.objects.filter(user=request.user).values_list('user_follows_id', flat=True)
+
+        following_posts = Post.objects.filter(user__id__in=following_user_ids).order_by('-date_time')
+    except Following.DoesNotExist:
+        raise Http404('Could not load following page.') 
