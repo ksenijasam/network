@@ -2,28 +2,13 @@
 
 {% block body %}
     <div class="row center-content">
-        <div class="col-10 margin-top-40 border">
-            <form action="{% url 'save_post' %}" method="post">
-
-                {% csrf_token %}
-
-                <h2>New Post</h2>
-                <textarea class="width-100" rows="5" name="content"></textarea>
-
-                
-                <button class="btn btn-info post-button" type="submit">Post</button>
-
-            </form>
-        </div>
-
         <div class="col-10 margin-top-40">
-            <!-- <div id="all_posts_data"></div> -->
 
-            {% for post in all_posts %}
+            {% for post in following_posts %}
                 <div class="border margin-padding-20">
                     <div class="row">
                         <div class="col-10">
-                            <a href="{% url 'profile' post.user__pk 'None' %}">{{ post.user__username }}</a>
+                            <a href="{% url 'profile' post.user.pk 'None' %}">{{ post.user }}</a>
                         </div>
                         <div class="col-2">
                             <div class="float-right">

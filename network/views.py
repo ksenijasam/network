@@ -112,7 +112,7 @@ def get_all_posts(request):
         # all_posts = serializers.serialize('json', all_posts)
         
         # return HttpResponse(all_posts)
-    except:
+    except Post.DoesNotExist:
         raise Http404('Could not get any posts.')
 
 def profile(request, id, follow = None):
@@ -157,6 +157,10 @@ def following(request):
     try:
         following_user_ids = Following.objects.filter(user=request.user).values_list('user_follows_id', flat=True)
 
-        following_posts = Post.objects.filter(user__id__in=following_user_ids).order_by('-date_time')
+        following_posts = Post.objects.filter(user__id__in=following_user_ids).annotate(likes_count=Count('liked_post')).order_by('-date_time')
+   
+        return render(request, "network/following.html", {
+            'following_posts': following_posts
+        })
     except Following.DoesNotExist:
         raise Http404('Could not load following page.') 
