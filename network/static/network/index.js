@@ -15,10 +15,33 @@ function get_all_posts() {
     // });
 }
 
-function editPost() {
-    document.getElementById('postContent').style.display = 'none';
-
-    document.getElementById('editPost').style.display = 'block';
-    document.getElementById('editPost').innerHTML = '<textarea id="editPostTextarea" class="width-100 margin-top-20" rows="5"></textarea>';
+function editPost(id, content) {
+    var postContentElement = document.getElementById('postContent_' + id);
+    var editPostElement = document.getElementById('editPost_' + id);
     
+    var editButton = document.getElementById('edit_' + id);
+    var cancelButton = document.getElementById('cancelButtonDiv_' + id);
+    cancelButton.innerHTML = '<button type="button" class="btn btn-sm btn-danger" onclick="cancelEditPost(' + id + ')" id="cancel_' + id + '">Cancel</button>'
+
+    editButton.style.display = 'none';
+    cancelButton.style.display = 'block';
+
+    postContentElement.style.display = 'none';
+    editPostElement.style.display = 'block';
+    editPostElement.innerHTML = '<textarea id="editPostTextarea_' + id + '" class="width-100 margin-top-20" rows="5">' + content + '</textarea>';
+}
+
+function cancelEditPost(id) {
+    var postContentElement = document.getElementById('postContent_' + id);
+    var editPostElement = document.getElementById('editPost_' + id);
+
+    var editButton = document.getElementById('edit_' + id);
+    var cancelButton = document.getElementById('cancelButtonDiv_' + id);
+
+
+    editButton.style.display = 'block';
+    cancelButton.style.display = 'none';
+
+    postContentElement.style.display = 'block';
+    editPostElement.style.display = 'none';
 }

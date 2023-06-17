@@ -31,11 +31,12 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-10" id="postContent">
+                        <div class="col-10" id="postContent_{{ post.id }}">
                             {{ post.content }}
                         </div>
-                        <div class="col-10" id="editPost"></div>
+                        <div class="col-10" id="editPost_{{ post.id }}"></div>
                         <div class="col-2">
                             <div class="float-right">
                                 {{ post.date_time | date:"d.m.y H:i"}}
@@ -46,7 +47,9 @@
                     {% if user.pk == post.user__pk %}
                         <div class="row">
                             <div class="col-10 margin-top-40">
-                                <button type="button" class="btn btn-sm btn-primary" onclick="editPost()">Edit post</button>
+                                <button type="button" class="btn btn-sm btn-primary" onclick="editPost('{{ post.id }}', '{{  post.content }}')" id="edit_{{ post.id }}">Edit post</button>
+
+                                <div id="cancelButtonDiv_{{ post.id }}"></div>
                             </div>
                         </div>
                     {% endif %}
