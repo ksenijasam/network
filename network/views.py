@@ -172,3 +172,19 @@ def following(request):
         })
     except Following.DoesNotExist:
         raise Http404('Could not load following page.') 
+
+@login_required
+def save_edited_post(request, id):
+    try:
+        if request.method == 'PUT':
+
+            print(id)
+
+            response_data = {
+                'message': 'Post successfully updated'
+            }
+
+            return JsonResponse(response_data, status=200)
+    except:
+        raise Http404('Could not save post.') 
+ 
