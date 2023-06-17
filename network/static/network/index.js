@@ -70,7 +70,9 @@ function getCookie(name) {
 }
 
 function saveEditPost (id) {
-    try {       
+    try {
+        var editedPostContent = document.getElementById('editPostTextarea_' + id).value;
+
         const csrftoken = getCookie('csrftoken');
         const headers = {
             'Content-Type': 'application/json',
@@ -82,7 +84,7 @@ function saveEditPost (id) {
             headers: headers,
             body: JSON.stringify({
               id: id,
-            //add content for id
+              editedPost: editedPostContent
             })
         })
     }

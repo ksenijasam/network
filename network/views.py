@@ -7,6 +7,7 @@ from django.core import serializers
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+import json
 
 from django.http import HttpResponse, JsonResponse, Http404
 
@@ -178,7 +179,8 @@ def save_edited_post(request, id):
     try:
         if request.method == 'PUT':
 
-            print(id)
+            result = request.body.decode()
+            result_object = json.loads(result)
 
             response_data = {
                 'message': 'Post successfully updated'
