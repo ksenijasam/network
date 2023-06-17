@@ -32,15 +32,24 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-10">
+                        <div class="col-10" id="postContent">
                             {{ post.content }}
                         </div>
+                        <div class="col-10" id="editPost"></div>
                         <div class="col-2">
                             <div class="float-right">
                                 {{ post.date_time | date:"d.m.y H:i"}}
                             </div>
                         </div>
                     </div>
+
+                    {% if user.pk == post.user__pk %}
+                        <div class="row">
+                            <div class="col-10 margin-top-40">
+                                <button type="button" class="btn btn-sm btn-primary" onclick="editPost()">Edit post</button>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             {% endfor %}
 

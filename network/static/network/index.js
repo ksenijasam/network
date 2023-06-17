@@ -14,3 +14,11 @@ function get_all_posts() {
     //     });
     // });
 }
+
+function editPost() {
+    document.getElementById('postContent').style.display = 'none';
+
+    document.getElementById('editPost').style.display = 'block';
+    document.getElementById('editPost').innerHTML = '<textarea id="editPostTextarea" class="width-100 margin-top-20" rows="5"></textarea>';
+    
+}
