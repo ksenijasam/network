@@ -18,9 +18,6 @@ def index(request):
     try: 
         all_posts = Post.objects.all().order_by('-date_time')
 
-        # likes = Like.objects.select_related('post').all()
-        # likes = Post.objects.prefetch_related('liked_post')
-
         posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post')).order_by('-date_time')
         all_posts = posts_with_likes_count.values('id', 'user__username', 'user__pk', 'content', 'date_time', 'likes_count')
 
@@ -118,9 +115,6 @@ def get_all_posts(request):
         return render(request, "network/index.html", {
                 'all_posts': all_posts,
         })
-        # all_posts = serializers.serialize('json', all_posts)
-        
-        # return HttpResponse(all_posts)
     except Post.DoesNotExist:
         raise Http404('Could not get any posts.')
 
