@@ -46,9 +46,15 @@
 
                     {% if user.pk == post.user__pk %}
                         <div class="row">
-                            <div class="col-10 margin-top-40">
+                            <div class="col-6 margin-top-40">
                                 <button type="button" class="btn btn-sm btn-primary" onclick="editPost('{{ post.id }}', '{{  post.content }}')" id="edit_{{ post.id }}">Edit post</button>
-
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <div id="savePostButton_{{ post.id }}"></div>
+                            </div>
+                            <div class="col-auto">
                                 <div id="cancelButtonDiv_{{ post.id }}"></div>
                             </div>
                         </div>

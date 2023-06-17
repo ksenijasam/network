@@ -23,8 +23,13 @@ function editPost(id, content) {
     var cancelButton = document.getElementById('cancelButtonDiv_' + id);
     cancelButton.innerHTML = '<button type="button" class="btn btn-sm btn-danger" onclick="cancelEditPost(' + id + ')" id="cancel_' + id + '">Cancel</button>'
 
+    var savePostButton = document.getElementById('savePostButton_' + id);
+    savePostButton.innerHTML = '<button type="button" class="btn btn-sm btn-success" onclick="saveEditPost(' + id + ')" id="savePost_' + id + '">Save</button>'
+
+
     editButton.style.display = 'none';
     cancelButton.style.display = 'block';
+    savePostButton.style.display = 'block';
 
     postContentElement.style.display = 'none';
     editPostElement.style.display = 'block';
@@ -37,10 +42,11 @@ function cancelEditPost(id) {
 
     var editButton = document.getElementById('edit_' + id);
     var cancelButton = document.getElementById('cancelButtonDiv_' + id);
-
+    var savePostButton = document.getElementById('savePostButton_' + id);
 
     editButton.style.display = 'block';
     cancelButton.style.display = 'none';
+    savePostButton.style.display = 'none';
 
     postContentElement.style.display = 'block';
     editPostElement.style.display = 'none';
