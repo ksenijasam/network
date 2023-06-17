@@ -19,7 +19,7 @@
         <div class="col-10 margin-top-40">
             <!-- <div id="all_posts_data"></div> -->
 
-            {% for post in all_posts %}
+            {% for post in page %}
                 <div class="border margin-padding-20">
                     <div class="row">
                         <div class="col-10">
@@ -43,6 +43,18 @@
                     </div>
                 </div>
             {% endfor %}
+
+            <div class="pagination center-content">
+                {% if page.has_previous %}
+                    <a href="?page={{ page.previous_page_number }}">Previous</a>  &nbsp; |
+                {% endif %}
+                
+                <span class="current-page">&nbsp; {{ page.number }} &nbsp; </span>
+                
+                {% if page.has_next %}
+                    | &nbsp;<a href="?page={{ page.next_page_number }}">Next</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}
