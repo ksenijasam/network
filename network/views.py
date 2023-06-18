@@ -186,3 +186,33 @@ def save_edited_post(request, id):
 
         return JsonResponse(response_data, status=200)
 
+
+@login_required
+def liked(request, id):
+    try:
+        if request.method == 'POST':
+
+        result = request.body.decode()
+        result_object = json.loads(result)
+        
+        liked_post = Post.objects.get(pk = id)
+
+        if(result_object['action'] == 'liked'):
+            liked = Like()
+            liked.post = liked_post
+            liked.user = request.user
+
+            liked.save()
+        else:
+            Like.objects.get(post = liked_post, user = request.user).delete()
+
+        liked_count = Like.objects.filter(post = liked_post).count()
+
+        response_data = {
+            'message': 'Post successfully updated',
+            'liked_count': liked_count
+        }
+
+        return JsonResponse(response_data, status=200) 
+    except:
+        raise Http404('Could not manage like actions.')

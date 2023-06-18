@@ -90,13 +90,40 @@ function saveEditPost (id) {
     }
 }
 
-function liked(id) {
-    var emptyHeart = document.getElementById('emptyHeart_' + id);
-    var fullHeart = document.getElementById('fullHeart_' + id);
+function liked(id, action) {
+    try{
+        var emptyHeart = document.getElementById('emptyHeart_' + id);
+        var fullHeart = document.getElementById('fullHeart_' + id);
 
-    fullHeart.innerHTML = '<i class="fa-solid fa-heart"></i>';
+        var likesCount = document.getElementById('likes_count_' + id);
 
-    emptyHeart.style.display = 'none';
-    fullHeart.style.display = 'block';
+        const csrftoken = getCookie('csrftoken');
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        };
 
+        if(action === 'liked') {
+            fullHeart.innerHTML = '<i class="fa-solid fa-heart" onclick="liked(' + id + ', \'unliked\')"></i>';
+
+            emptyHeart.style.display = 'none';
+            fullHeart.style.display = 'block';
+        } else {
+            emptyHeart.style.display = 'block';
+            fullHeart.style.display = 'none';
+        }
+
+        fetch('/liked/' + id, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({ action: action })
+        })
+        .then((response) => response.json())
+        .then(response => {
+            likesCount.textContent = response.liked_count;
+        })
+    }
+    catch {
+        alert('Error occured, please try again.');
+    }
 }
