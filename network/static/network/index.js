@@ -56,6 +56,20 @@ function saveEditPost (id) {
     try {
         var editedPostContent = document.getElementById('editPostTextarea_' + id).value;
 
+        var postContentElement = document.getElementById('postContent_' + id);
+        postContentElement.innerHTML = editedPostContent;
+
+        var editButton = document.getElementById('edit_' + id);
+        var cancelButton = document.getElementById('cancelButtonDiv_' + id);
+        var savePostButton = document.getElementById('savePostButton_' + id);
+        var editPostElement = document.getElementById('editPost_' + id);
+
+        postContentElement.style.display = 'block';
+        editButton.style.display = 'block';
+        cancelButton.style.display = 'none';
+        savePostButton.style.display = 'none';
+        editPostElement.style.display = 'none';
+
         const csrftoken = getCookie('csrftoken');
         const headers = {
             'Content-Type': 'application/json',

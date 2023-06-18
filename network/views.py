@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.core import serializers
 from django.db.models import Count
@@ -170,17 +170,19 @@ def following(request):
 
 @login_required
 def save_edited_post(request, id):
-    try:
-        if request.method == 'PUT':
+    if request.method == 'PUT':
 
-            result = request.body.decode()
-            result_object = json.loads(result)
+        result = request.body.decode()
+        result_object = json.loads(result)
 
-            response_data = {
-                'message': 'Post successfully updated'
-            }
+        editedPost = get_object_or_404(Post, pk = id)
+        editedPost.content  = result_object['editedPost']
 
-            return JsonResponse(response_data, status=200)
-    except:
-        raise Http404('Could not save post.') 
- 
+        editedPost.save()
+
+        response_data = {
+            'message': 'Post successfully updated'
+        }
+
+        return JsonResponse(response_data, status=200)
+
