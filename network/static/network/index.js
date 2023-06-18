@@ -89,3 +89,14 @@ function saveEditPost (id) {
         alert('Error occured, please try again.');
     }
 }
+
+function liked(id) {
+    var emptyHeart = document.getElementById('emptyHeart_' + id);
+    var fullHeart = document.getElementById('fullHeart_' + id);
+
+    fullHeart.innerHTML = '<i class="fa-solid fa-heart"></i>';
+
+    emptyHeart.style.display = 'none';
+    fullHeart.style.display = 'block';
+
+}

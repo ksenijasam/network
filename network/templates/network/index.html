@@ -17,8 +17,6 @@
         </div>
 
         <div class="col-10 margin-top-40">
-            <!-- <div id="all_posts_data"></div> -->
-
             {% for post in page %}
                 <div class="border margin-padding-20">
                     <div class="row">
@@ -27,7 +25,17 @@
                         </div>
                         <div class="col-2">
                             <div class="float-right">
-                                💓 {{post.likes_count}} 
+                               <div class="row">
+                                <div class="col-6 padding-10">
+                                    <div> 
+                                        <i class="fa-regular fa-heart" id="emptyHeart_{{ post.id }}" onclick="liked('{{ post.id }}')"></i>
+                                        <span id="fullHeart_{{ post.id }}"></span> 
+                                    </div>
+                                </div>
+                                <div class="col-6 padding-10">
+                                    {{post.likes_count}}
+                                </div>
+                               </div>
                             </div>
                         </div>
                     </div>

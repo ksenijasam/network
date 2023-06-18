@@ -47,3 +47,12 @@ body {
 .margin-top-20 {
     margin-top: 20px;
 }
+
+.fa-heart:hover {
+    color: #fd1b1b;
+    cursor: pointer;
+}
+
+.padding-10 {
+    padding: 10px;
+}
