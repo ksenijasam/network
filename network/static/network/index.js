@@ -1,3 +1,34 @@
+document.addEventListener('DOMContentLoaded', function() {
+
+    const csrftoken = getCookie('csrftoken');
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+    };
+
+    fetch('/liked_posts', { headers: headers})
+    .then((response) => response.json())
+    .then(response => {
+        if(response.message === 'success') {
+            response.all_posts.forEach((value) => {
+                var emptyHeart = document.getElementById('emptyHeart_' + value.id);
+                var fullHeart = document.getElementById('fullHeart_' + value.id);
+
+                if (value.liked_by_user) {
+                    emptyHeart.style.display = 'none'; 
+                    fullHeart.style.display = 'inline'; 
+                } else {
+                    emptyHeart.style.display = 'inline';
+                    fullHeart.style.display = 'none';    
+                }
+            })
+        } else {
+            alert('Error occured, please try again.');
+        }
+    })
+});
+
+
 function editPost(id, content) {
     var postContentElement = document.getElementById('postContent_' + id);
     var editPostElement = document.getElementById('editPost_' + id);
@@ -104,8 +135,6 @@ function liked(id, action) {
         };
 
         if(action === 'liked') {
-            fullHeart.innerHTML = '<i class="fa-solid fa-heart" onclick="liked(' + id + ', \'unliked\')"></i>';
-
             emptyHeart.style.display = 'none';
             fullHeart.style.display = 'block';
         } else {

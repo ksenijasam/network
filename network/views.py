@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.core import serializers
-from django.db.models import Count
+from django.db.models import Count, BooleanField, Case, When
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import json
@@ -216,3 +216,33 @@ def liked(request, id):
             return JsonResponse(response_data, status=200) 
     except:
         raise Http404('Could not manage like actions.')
+
+@login_required
+def liked_posts(request):
+    try:
+        all_posts = Post.objects.all().order_by('-date_time')
+
+        posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post'), liked_by_user=Case(
+                When(liked_post__user=request.user, then=True),
+                default=False,
+                output_field=BooleanField()
+        )).order_by('-date_time')
+        all_posts = posts_with_likes_count.values('id', 'liked_by_user')
+
+        posts_list = list(all_posts)
+
+        response_data = {
+            'message': 'success',
+            'all_posts': posts_list
+        }
+
+        return JsonResponse(response_data, status=200)
+    except:
+        response_data = {
+            'message': 'Error occured'
+        }
+
+        return JsonResponse(response_data, status=500)
+
+    
+    
