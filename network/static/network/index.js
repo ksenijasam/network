@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (value.liked_by_user) {
                     emptyHeart.style.display = 'none'; 
-                    fullHeart.style.display = 'inline'; 
+                    fullHeart.style.display = 'block'; 
                 } else {
-                    emptyHeart.style.display = 'inline';
+                    emptyHeart.style.display = 'block';
                     fullHeart.style.display = 'none';    
                 }
             })
