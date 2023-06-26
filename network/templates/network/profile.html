@@ -8,8 +8,8 @@
                 <h2>{{ user }}</h2>
             </div>
             <div class="col-2">
-                {% if not its_user and authenticated %} 
-                    {% if follows %}
+                {% if not its_user %} 
+                    {% if not follows %}
                         <form action="{% url 'profile' user.pk 'True' %}" method="post">
                             {% csrf_token %}
                             <button class="btn btn-success" type="submit">Follow</button>

@@ -12,14 +12,32 @@
                         </div>
                         <div class="col-2">
                             <div class="float-right">
-                                💓 {{post.likes_count}} 
+                            <div class="row">
+                                <div class="col-6 padding-10">
+                                    {% if not authenticated  %} 
+                                        <div> 
+                                            <i class="fa-regular fa-heart"></i>
+                                        </div>
+                                    {% else %}
+                                        <div> 
+                                            <i class="fa-regular fa-heart fa-heart-hover" id="emptyHeart_{{ post.id }}" onclick="liked('{{ post.id }}', 'liked')"></i>
+                                            <i class="fa-solid fa-heart fa-heart-hover" id="fullHeart_{{ post.id }}" onclick="liked('{{ post.id }}', 'unliked')"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-6 padding-10" id="likes_count_{{ post.id }}">
+                                    {{post.likes_count}}
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-10">
+                        <div class="col-10" id="postContent_{{ post.id }}">
                             {{ post.content }}
                         </div>
+                        <div class="col-10" id="editPost_{{ post.id }}"></div>
                         <div class="col-2">
                             <div class="float-right">
                                 {{ post.date_time | date:"d.m.y H:i"}}
