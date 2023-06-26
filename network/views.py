@@ -149,13 +149,20 @@ def profile(request, id, follow = None):
         posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post')).order_by('-date_time')
         user_posts = posts_with_likes_count.values('id', 'user__username', 'content', 'date_time', 'likes_count')
 
+        paginator = Paginator(user_posts, 10)
+
+        page_number = request.GET.get('page', '1')  
+        page = paginator.get_page(page_number)
+
         return render(request, "network/profile.html", {
             'user': user,
             'its_user': its_user,
             'following': following,
             'follows': follows,
             'followers': followers,
-            'user_posts': user_posts
+            'user_posts': user_posts,
+            'authenticated': authenticated,
+            'page': page
         })
     except User.DoesNotExist:
         raise Http404('Could not load user profile.') 
