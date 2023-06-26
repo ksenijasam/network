@@ -27,10 +27,16 @@
                             <div class="float-right">
                                <div class="row">
                                 <div class="col-6 padding-10">
-                                    <div> 
-                                        <i class="fa-regular fa-heart" id="emptyHeart_{{ post.id }}" onclick="liked('{{ post.id }}', 'liked')"></i>
-                                        <i class="fa-solid fa-heart" id="fullHeart_{{ post.id }}" onclick="liked('{{ post.id }}', 'unliked')"></i>
-                                    </div>
+                                    {% if not user.is_authenticated %} 
+                                        <div> 
+                                            <i class="fa-regular fa-heart"></i>
+                                        </div>
+                                    {% else %}
+                                        <div> 
+                                            <i class="fa-regular fa-heart fa-heart-hover" id="emptyHeart_{{ post.id }}" onclick="liked('{{ post.id }}', 'liked')"></i>
+                                            <i class="fa-solid fa-heart fa-heart-hover" id="fullHeart_{{ post.id }}" onclick="liked('{{ post.id }}', 'unliked')"></i>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 <div class="col-6 padding-10" id="likes_count_{{ post.id }}">
                                     {{post.likes_count}}

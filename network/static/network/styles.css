@@ -48,7 +48,7 @@ body {
     margin-top: 20px;
 }
 
-.fa-heart:hover {
+.fa-heart-hover:hover {
     color: #fd1b1b;
     cursor: pointer;
 }

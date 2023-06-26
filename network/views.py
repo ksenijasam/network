@@ -123,20 +123,24 @@ def profile(request, id, follow = None):
         user = User.objects.get(pk = id)
 
         its_user = False
-        if(request.user.pk == id):
-            its_user = True
+        follows = None
 
-        if(follow == 'True'):
-            add_following = Following()
-            add_following.user = request.user
-            add_following.user_follows = user
-            add_following.save()
-        elif(follow == 'False'):
-            Following.objects.filter(user = request.user, user_follows = user).delete()
+        if request.user.is_authenticated:
+            follows = False
 
-        follows = False
-        if(Following.objects.filter(user = request.user, user_follows = user)):
-            follows = True
+            if(request.user.pk == id):
+                its_user = True
+
+            if(follow == 'True'):
+                add_following = Following()
+                add_following.user = request.user
+                add_following.user_follows = user
+                add_following.save()
+            elif(follow == 'False'):
+                Following.objects.filter(user = request.user, user_follows = user).delete()
+
+            if(Following.objects.filter(user = request.user, user_follows = user)):
+                follows = True
 
         following = Following.objects.filter(user = id).count()
         followers = Following.objects.filter(user_follows = id).count()
