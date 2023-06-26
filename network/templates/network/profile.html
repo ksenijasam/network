@@ -8,13 +8,13 @@
                 <h2>{{ user }}</h2>
             </div>
             <div class="col-2">
-                {% if not its_user %} 
-                    {% if follows == False %}
+                {% if not its_user and authenticated %} 
+                    {% if follows %}
                         <form action="{% url 'profile' user.pk 'True' %}" method="post">
                             {% csrf_token %}
                             <button class="btn btn-success" type="submit">Follow</button>
                         </form>
-                    {% elif follows == True %}
+                    {% else %}
                         <form action="{% url 'profile' user.pk 'False' %}" method="post">
                             {% csrf_token %}
                             <button class="btn btn-info" type="submit">Unfollow</button>
@@ -32,20 +32,54 @@
                             <div class="col-10"></div>
                             <div class="col-2">
                                 <div class="float-right">
-                                    💓 {{post.likes_count}} 
+                                <div class="row">
+                                    <div class="col-6 padding-10">
+                                        {% if not authenticated  %} 
+                                            <div> 
+                                                <i class="fa-regular fa-heart"></i>
+                                            </div>
+                                        {% else %}
+                                            <div> 
+                                                <i class="fa-regular fa-heart fa-heart-hover" id="emptyHeart_{{ post.id }}" onclick="liked('{{ post.id }}', 'liked')"></i>
+                                                <i class="fa-solid fa-heart fa-heart-hover" id="fullHeart_{{ post.id }}" onclick="liked('{{ post.id }}', 'unliked')"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-6 padding-10" id="likes_count_{{ post.id }}">
+                                        {{post.likes_count}}
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
-                            <div class="col-10">
+                            <div class="col-10" id="postContent_{{ post.id }}">
                                 {{ post.content }}
                             </div>
+                            <div class="col-10" id="editPost_{{ post.id }}"></div>
                             <div class="col-2">
                                 <div class="float-right">
                                     {{ post.date_time | date:"d.m.y H:i"}}
                                 </div>
                             </div>
                         </div>
+
+                        {% if user.pk == post.user__pk %}
+                            <div class="row">
+                                <div class="col-6 margin-top-40">
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="editPost('{{ post.id }}', '{{  post.content }}')" id="edit_{{ post.id }}">Edit post</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-auto">
+                                    <div id="savePostButton_{{ post.id }}"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <div id="cancelButtonDiv_{{ post.id }}"></div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>

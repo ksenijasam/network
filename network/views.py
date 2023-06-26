@@ -123,10 +123,11 @@ def profile(request, id, follow = None):
         user = User.objects.get(pk = id)
 
         its_user = False
-        follows = None
+        authenticated = False
+        follows = False
 
         if request.user.is_authenticated:
-            follows = False
+            authenticated = True
 
             if(request.user.pk == id):
                 its_user = True
