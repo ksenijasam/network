@@ -6,7 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
         'X-CSRFToken': csrftoken
     };
 
-    fetch('/liked_posts', { headers: headers})
+    let path = '/index';
+
+    if (window.location.pathname === '/following') {
+        path = '/following';
+    }
+
+    fetch('/liked_posts' + path, { headers: headers})
     .then((response) => response.json())
     .then(response => {
         if(response.message === 'success') {

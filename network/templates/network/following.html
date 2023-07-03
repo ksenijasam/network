@@ -14,7 +14,7 @@
                             <div class="float-right">
                             <div class="row">
                                 <div class="col-6 padding-10">
-                                    {% if not authenticated  %} 
+                                    {% if not request.user.is_authenticated  %} 
                                         <div> 
                                             <i class="fa-regular fa-heart"></i>
                                         </div>
