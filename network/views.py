@@ -144,8 +144,8 @@ def profile(request, id, follow = None):
         following = Following.objects.filter(user = id).count()
         followers = Following.objects.filter(user_follows = id).count()
 
-        posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post')).order_by('-date_time')
-        user_posts = posts_with_likes_count.values('id', 'user__username', 'content', 'date_time', 'likes_count')
+        posts_with_likes_count = Post.objects.filter(user = user).annotate(likes_count=Count('liked_post')).order_by('-date_time')
+        user_posts = posts_with_likes_count.values('id', 'user__username', 'user__pk', 'content', 'date_time', 'likes_count')
 
         paginator = Paginator(user_posts, 10)
 
