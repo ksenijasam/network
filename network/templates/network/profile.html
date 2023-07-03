@@ -8,7 +8,7 @@
                 <h2>{{ user }}</h2>
             </div>
             <div class="col-2">
-                {% if not its_user %} 
+                {% if not its_user and request.user.is_authenticated %} 
                     {% if not follows %}
                         <form action="{% url 'profile' user.pk 'True' %}" method="post">
                             {% csrf_token %}
@@ -34,7 +34,7 @@
                                 <div class="float-right">
                                 <div class="row">
                                     <div class="col-6 padding-10">
-                                        {% if not authenticated  %} 
+                                        {% if not request.user.is_authenticated  %} 
                                             <div> 
                                                 <i class="fa-regular fa-heart"></i>
                                             </div>

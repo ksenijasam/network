@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="row center-content margin-bottom-20">
-        {% if user.is_authenticated %}
+        {% if request.user.is_authenticated %}
             <div class="col-10 margin-top-40 border">
                 <form action="{% url 'save_post' %}" method="post">
 

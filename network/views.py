@@ -123,11 +123,9 @@ def profile(request, id, follow = None):
         user = User.objects.get(pk = id)
 
         its_user = False
-        authenticated = False
         follows = False
 
         if request.user.is_authenticated:
-            authenticated = True
 
             if(request.user.pk == id):
                 its_user = True
@@ -161,7 +159,6 @@ def profile(request, id, follow = None):
             'follows': follows,
             'followers': followers,
             'user_posts': user_posts,
-            'authenticated': authenticated,
             'page': page
         })
     except User.DoesNotExist:
@@ -171,16 +168,12 @@ def profile(request, id, follow = None):
 def following(request):
     try:
 
-        if request.user.is_authenticated:
-            authenticated = True
-
         following_user_ids = Following.objects.filter(user=request.user).values_list('user_follows_id', flat=True)
 
         following_posts = Post.objects.filter(user__id__in=following_user_ids).annotate(likes_count=Count('liked_post')).order_by('-date_time')
    
         return render(request, "network/following.html", {
-            'following_posts': following_posts,
-            'authenticated': authenticated
+            'following_posts': following_posts
         })
     except Following.DoesNotExist:
         raise Http404('Could not load following page.') 
