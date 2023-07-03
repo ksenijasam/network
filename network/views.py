@@ -105,7 +105,8 @@ def save_post(request):
 
             return HttpResponseRedirect(reverse("index"))
         except:
-            raise e  #handle error logic
+            raise Http404('Could not save post.')
+
 
 
 def get_all_posts(request):
