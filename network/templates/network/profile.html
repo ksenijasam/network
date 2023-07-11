@@ -4,10 +4,10 @@
 
     <div class="margin-top-40">
         <div class="row">
-            <div class="col-10">
+            <div class="col-9">
                 <h2>{{ user }}</h2>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 {% if not its_user and request.user.is_authenticated %} 
                     {% if not follows %}
                         <form action="{% url 'profile' user.pk 'True' %}" method="post">
@@ -25,7 +25,7 @@
         </div>
 
         <div class="row margin-top-40">
-            <div class="col-10">
+            <div class="col-9">
                 {% for post in user_posts %}
                     <div class="border margin-padding-20">
                         <div class="row">
@@ -45,7 +45,7 @@
                                             </div>
                                         {% endif %}
                                     </div>
-                                    <div class="col-6 padding-10" id="likes_count_{{ post.id }}">
+                                    <div class="col-6 padding-10 margin-top-minus-7" id="likes_count_{{ post.id }}">
                                         {{post.likes_count}}
                                     </div>
                                 </div>
@@ -95,9 +95,9 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <div>
-                    <span>Following: {{ following }}</span> 
+                    <span>Following: {{ following }}</span> &nbsp;
                     <span>Followers: {{ followers }}</span>
                 </div>
             </div>
