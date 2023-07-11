@@ -22,10 +22,15 @@
             {% for post in page %}
                 <div class="border margin-padding-20">
                     <div class="row">
-                        <div class="col-10">
+                        <div class="col-8">
                             <a href="{% url 'profile' post.user__pk 'None' %}">{{ post.user__username }}</a>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3">
+                            <div class="float-right">
+                                {{ post.date_time | date:"d.m.y H:i"}}
+                            </div>
+                        </div>
+                        <div class="col-1">
                             <div class="float-right">
                                <div class="row">
                                 <div class="col-6 padding-10">
@@ -53,17 +58,12 @@
                             {{ post.content }}
                         </div>
                         <div class="col-10" id="editPost_{{ post.id }}"></div>
-                        <div class="col-2">
-                            <div class="float-right">
-                                {{ post.date_time | date:"d.m.y H:i"}}
-                            </div>
-                        </div>
                     </div>
 
                     {% if user.pk == post.user__pk %}
                         <div class="row">
-                            <div class="col-6 margin-top-40">
-                                <button type="button" class="btn btn-sm btn-primary edit-button" onclick="editPost('{{ post.id }}', '{{  post.content }}')" id="edit_{{ post.id }}">Edit post</button>
+                            <div class="col-12 margin-top-40">
+                                <button type="button" class="btn btn-sm btn-primary edit-button float-right" onclick="editPost('{{ post.id }}', '{{  post.content }}')" id="edit_{{ post.id }}">Edit post</button>
                             </div>
                         </div>
                         <div class="row">
