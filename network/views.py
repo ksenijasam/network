@@ -108,7 +108,6 @@ def save_post(request):
             raise Http404('Could not save post.')
 
 
-
 def get_all_posts(request):
     try:
         all_posts = Post.objects.all()
@@ -118,6 +117,7 @@ def get_all_posts(request):
         })
     except Post.DoesNotExist:
         raise Http404('Could not get any posts.')
+
 
 def profile(request, id, follow = None):
     try:
@@ -165,23 +165,27 @@ def profile(request, id, follow = None):
     except User.DoesNotExist:
         raise Http404('Could not load user profile.') 
 
+
 @login_required
 def save_edited_post(request, id):
-    if request.method == 'PUT':
+    try:
+        if request.method == 'PUT':
 
-        result = request.body.decode()
-        result_object = json.loads(result)
+            result = request.body.decode()
+            result_object = json.loads(result)
 
-        editedPost = get_object_or_404(Post, pk = id)
-        editedPost.content  = result_object['editedPost']
+            editedPost = get_object_or_404(Post, pk = id)
+            editedPost.content  = result_object['editedPost']
 
-        editedPost.save()
+            editedPost.save()
 
-        response_data = {
-            'message': 'Post successfully updated'
-        }
+            response_data = {
+                'message': 'Post successfully updated'
+            }
 
-        return JsonResponse(response_data, status=200)
+            return JsonResponse(response_data, status=200)
+    except:
+        raise Http404('Could not save edited post.') 
 
 
 @login_required
@@ -214,10 +218,11 @@ def liked(request, id):
     except:
         raise Http404('Could not manage like actions.')
 
+
 @login_required
 def liked_posts(request, path):
     try:
-        if(path == 'index'):
+        if path == 'index':
             all_posts = Post.objects.all().order_by('-date_time')
 
             posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post'), liked_by_user=Case(
@@ -228,9 +233,12 @@ def liked_posts(request, path):
 
             all_posts = posts_with_likes_count.values('id', 'liked_by_user')
         else:
-            following_user_ids = Following.objects.filter(user=request.user).values_list('user_follows_id', flat=True)
+            if path == 'following':
+                user_ids = Following.objects.filter(user=request.user).values_list('user_follows_id', flat=True)
+            else:
+                user_ids = path[-1]
 
-            posts_with_likes_count = Post.objects.filter(user__id__in=following_user_ids).annotate(likes_count=Count('liked_post'), liked_by_user=Case(
+            posts_with_likes_count = Post.objects.filter(user__id__in=user_ids).annotate(likes_count=Count('liked_post'), liked_by_user=Case(
                     When(liked_post__user=request.user, then=True),
                     default=False,
                     output_field=BooleanField())).order_by('-date_time')
@@ -252,10 +260,10 @@ def liked_posts(request, path):
 
         return JsonResponse(response_data, status=500)
 
+
 @login_required
 def following(request):
     try:
-        
         following_user_ids = Following.objects.filter(user=request.user).values_list('user_follows_id', flat=True)
 
         following_posts = Post.objects.filter(user__id__in=following_user_ids).annotate(likes_count=Count('liked_post')).order_by('-date_time')

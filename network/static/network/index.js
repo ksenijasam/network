@@ -6,13 +6,15 @@ document.addEventListener('DOMContentLoaded', function() {
         'X-CSRFToken': csrftoken
     };
 
-    let path = '/index';
+    let path = 'index';
 
     if (window.location.pathname === '/following') {
-        path = '/following';
+        path = 'following';
+    } else if (window.location.pathname.includes('profile')) {
+        path = window.location.pathname.substring(0, 10).replace(/\//g, '');
     }
 
-    fetch('/liked_posts' + path, { headers: headers})
+    fetch('/liked_posts/' + path, { headers: headers})
     .then((response) => response.json())
     .then(response => {
         if(response.message === 'success') {
