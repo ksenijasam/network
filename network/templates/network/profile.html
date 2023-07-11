@@ -17,7 +17,7 @@
                     {% else %}
                         <form action="{% url 'profile' user.pk 'False' %}" method="post">
                             {% csrf_token %}
-                            <button class="btn btn-info" type="submit">Unfollow</button>
+                            <button class="btn btn-info edit-button" type="submit">Unfollow</button>
                         </form>
                     {% endif %}
                 {% endif %}
@@ -68,7 +68,7 @@
                         {% if request.user.pk == post.user__pk %}
                             <div class="row">
                                 <div class="col-6 margin-top-40">
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="editPost('{{ post.id }}', '{{  post.content }}')" id="edit_{{ post.id }}">Edit post</button>
+                                    <button type="button" class="btn btn-sm btn-primary edit-button" onclick="editPost('{{ post.id }}', '{{  post.content }}')" id="edit_{{ post.id }}">Edit post</button>
                                 </div>
                             </div>
                             <div class="row">
