@@ -113,7 +113,7 @@ def get_all_posts(request):
         all_posts = Post.objects.all()
 
         return render(request, "network/index.html", {
-                'all_posts': all_posts,
+            'all_posts': all_posts,
         })
     except Post.DoesNotExist:
         raise Http404('Could not get any posts.')
