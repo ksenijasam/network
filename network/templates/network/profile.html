@@ -29,8 +29,13 @@
                 {% for post in user_posts %}
                     <div class="border margin-padding-20">
                         <div class="row">
-                            <div class="col-10"></div>
-                            <div class="col-2">
+                            <div class="col-8"></div>
+                            <div class="col-3">
+                                <div class="float-right">
+                                    {{ post.date_time | date:"d.m.y H:i"}}
+                                </div>
+                            </div>
+                            <div class="col-1">
                                 <div class="float-right">
                                 <div class="row">
                                     <div class="col-6 padding-10">
@@ -58,11 +63,6 @@
                                 {{ post.content }}
                             </div>
                             <div class="col-10" id="editPost_{{ post.id }}"></div>
-                            <div class="col-2">
-                                <div class="float-right">
-                                    {{ post.date_time | date:"d.m.y H:i"}}
-                                </div>
-                            </div>
                         </div>
 
                         {% if request.user.pk == post.user__pk %}

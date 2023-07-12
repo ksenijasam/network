@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import json
 
-from django.http import HttpResponse, JsonResponse, Http404
+from django.http import HttpResponse, JsonResponse, Http404, HttpResponseServerError
 
 from .models import User, UserProfile, Post, Like, Following
 
@@ -111,8 +111,8 @@ def get_all_posts(request):
         return render(request, "network/index.html", {
             'all_posts': all_posts,
         })
-    except Post.DoesNotExist:
-        raise Http404('Could not get any posts.')
+    except:
+        raise HttpResponseServerError('Could not get any posts.')
 
 
 def profile(request, id, follow = None):
@@ -155,8 +155,8 @@ def profile(request, id, follow = None):
             'user_posts': user_posts,
             'page': page
         })
-    except User.DoesNotExist:
-        raise Http404('Could not load user profile.') 
+    except:
+        raise HttpResponseServerError('Could not load user profile.') 
 
 
 @login_required
@@ -178,7 +178,7 @@ def save_edited_post(request, id):
 
             return JsonResponse(response_data, status=200)
     except:
-        raise Http404('Could not save edited post.') 
+        raise HttpResponseServerError('Could not save edited post.') 
 
 
 @login_required
@@ -209,7 +209,7 @@ def liked(request, id):
 
             return JsonResponse(response_data, status=200) 
     except:
-        raise Http404('Could not manage like actions.')
+        raise HttpResponseServerError('Could not manage like actions.')
 
 
 @login_required
@@ -270,15 +270,19 @@ def following(request):
             'following_posts': following_posts,
             'page': page
         })
-    except Following.DoesNotExist:
-        raise Http404('Could not load following page.') 
+    except:
+        raise HttpResponseServerError('Could not load following page.') 
+
 
 def paginator(request, posts):
-    paginator = Paginator(posts, 10)
+    try:
+        paginator = Paginator(posts, 10)
 
-    global page_number
-    page_number = request.GET.get('page', '1')  
-    page = paginator.get_page(page_number)
+        global page_number
+        page_number = request.GET.get('page', '1')  
+        page = paginator.get_page(page_number)
 
-    return page
+        return page
+    except:
+        raise Http404('Could not load page.') 
     
