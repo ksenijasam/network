@@ -13,16 +13,14 @@ from django.http import HttpResponse, JsonResponse, Http404
 
 from .models import User, UserProfile, Post, Like, Following
 
+page_number = None
 
 def index(request):
     try: 
         posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post'))
         all_posts = posts_with_likes_count.values('id', 'user__username', 'user__pk', 'content', 'date_time', 'likes_count').order_by('-date_time')
 
-        paginator = Paginator(all_posts, 10)
-
-        page_number = request.GET.get('page', '1')  
-        page = paginator.get_page(page_number)
+        page = paginator(request, all_posts)
 
         context = {
             'page': page
@@ -146,10 +144,7 @@ def profile(request, id, follow = None):
         posts_with_likes_count = Post.objects.filter(user = user).annotate(likes_count=Count('liked_post')).order_by('-date_time')
         user_posts = posts_with_likes_count.values('id', 'user__username', 'user__pk', 'content', 'date_time', 'likes_count')
 
-        paginator = Paginator(user_posts, 10)
-
-        page_number = request.GET.get('page', '1')  
-        page = paginator.get_page(page_number)
+        page = paginator(request, user_posts)
 
         return render(request, "network/profile.html", {
             'user': user,
@@ -238,8 +233,15 @@ def liked_posts(request, path):
                     output_field=BooleanField())).order_by('-date_time')
 
         all_posts = posts_with_likes_count.values('id', 'liked_by_user')
-            
-        posts_list = list(all_posts)
+
+        posts_per_page = 10 
+        paginator = Paginator(all_posts, posts_per_page)
+
+        global page_number
+        pg_number = page_number
+        page_posts = paginator.get_page(pg_number).object_list    
+
+        posts_list = list(page_posts)
 
         response_data = {
             'message': 'success',
@@ -261,10 +263,22 @@ def following(request):
         following_user_ids = Following.objects.filter(user=request.user).values_list('user_follows_id', flat=True)
 
         following_posts = Post.objects.filter(user__id__in=following_user_ids).annotate(likes_count=Count('liked_post')).order_by('-date_time')
-   
+
+        page = paginator(request, following_posts)
+
         return render(request, "network/following.html", {
-            'following_posts': following_posts
+            'following_posts': following_posts,
+            'page': page
         })
     except Following.DoesNotExist:
         raise Http404('Could not load following page.') 
+
+def paginator(request, posts):
+    paginator = Paginator(posts, 10)
+
+    global page_number
+    page_number = request.GET.get('page', '1')  
+    page = paginator.get_page(page_number)
+
+    return page
     
