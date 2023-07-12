@@ -124,18 +124,18 @@ def profile(request, id, follow = None):
 
         if request.user.is_authenticated:
 
-            if(request.user.pk == id):
+            if request.user.pk == id:
                 its_user = True
 
-            if(follow == 'True'):
+            if follow == 'True':
                 add_following = Following()
                 add_following.user = request.user
                 add_following.user_follows = user
                 add_following.save()
-            elif(follow == 'False'):
+            elif follow == 'False':
                 Following.objects.filter(user = request.user, user_follows = user).delete()
 
-            if(Following.objects.filter(user = request.user, user_follows = user)):
+            if Following.objects.filter(user = request.user, user_follows = user):
                 follows = True
 
         following = Following.objects.filter(user = id).count()
@@ -190,7 +190,7 @@ def liked(request, id):
             
             liked_post = Post.objects.get(pk = id)
 
-            if(result_object['action'] == 'liked'):
+            if result_object['action'] == 'liked':
                 liked = Like()
                 liked.post = liked_post
                 liked.user = request.user
