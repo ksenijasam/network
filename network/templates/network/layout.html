@@ -51,18 +51,19 @@
             {% endblock %}
         </div>
 
-        <div class="pagination center-content">
-            {% if page.has_previous %}
-                <a href="?page={{ page.previous_page_number }}">Previous</a>  &nbsp; |
-            {% endif %}
-            
-            <span class="current-page">&nbsp; {{ page.number }} &nbsp; </span>
-            
-            {% if page.has_next %}
-                | &nbsp;<a href="?page={{ page.next_page_number }}">Next</a>
-            {% endif %}
-        </div>
-        
+        {% if page %}
+            <div class="pagination center-content">
+                {% if page.has_previous %}
+                    <a href="?page={{ page.previous_page_number }}">Previous</a>  &nbsp; |
+                {% endif %}
+                
+                <span class="current-page">&nbsp; {{ page.number }} &nbsp; </span>
+                
+                {% if page.has_next %}
+                    | &nbsp;<a href="?page={{ page.next_page_number }}">Next</a>
+                {% endif %}
+            </div>
+        {% endif %}
     </body>
 
     {% block script %}

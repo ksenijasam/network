@@ -19,7 +19,7 @@ def index(request):
         all_posts = Post.objects.all().order_by('-date_time')
 
         posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post')).order_by('-date_time')
-        all_posts = posts_with_likes_count.values('id', 'user__username', 'user__pk', 'content', 'date_time', 'likes_count')
+        all_posts = posts_with_likes_count.values('id', 'user__username', 'user__pk', 'content', 'date_time', 'likes_count').order_by('-date_time')
 
         paginator = Paginator(all_posts, 10)
 
@@ -27,7 +27,7 @@ def index(request):
         page = paginator.get_page(page_number)
 
         context = {
-            'page': page,
+            'page': page
         }
 
         return render(request, 'network/index.html', context)
@@ -230,8 +230,6 @@ def liked_posts(request, path):
                     default=False,
                     output_field=BooleanField()
             )).order_by('-date_time')
-
-            all_posts = posts_with_likes_count.values('id', 'liked_by_user')
         else:
             if path == 'following':
                 user_ids = Following.objects.filter(user=request.user).values_list('user_follows_id', flat=True)
@@ -243,7 +241,7 @@ def liked_posts(request, path):
                     default=False,
                     output_field=BooleanField())).order_by('-date_time')
 
-            all_posts = posts_with_likes_count.values('id', 'liked_by_user')
+        all_posts = posts_with_likes_count.values('id', 'liked_by_user')
             
         posts_list = list(all_posts)
 
