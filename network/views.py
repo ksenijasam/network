@@ -152,7 +152,6 @@ def profile(request, id, follow = None):
             'following': following,
             'follows': follows,
             'followers': followers,
-            'user_posts': user_posts,
             'page': page
         })
     except:
@@ -234,8 +233,7 @@ def liked_posts(request, path):
 
         all_posts = posts_with_likes_count.values('id', 'liked_by_user')
 
-        posts_per_page = 10 
-        paginator = Paginator(all_posts, posts_per_page)
+        paginator = Paginator(all_posts, 10)
 
         global page_number
         pg_number = page_number
@@ -267,7 +265,6 @@ def following(request):
         page = paginator(request, following_posts)
 
         return render(request, "network/following.html", {
-            'following_posts': following_posts,
             'page': page
         })
     except:
