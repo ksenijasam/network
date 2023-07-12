@@ -16,7 +16,7 @@ from .models import User, UserProfile, Post, Like, Following
 
 def index(request):
     try: 
-        posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post')).order_by('-date_time')
+        posts_with_likes_count = Post.objects.annotate(likes_count=Count('liked_post'))
         all_posts = posts_with_likes_count.values('id', 'user__username', 'user__pk', 'content', 'date_time', 'likes_count').order_by('-date_time')
 
         paginator = Paginator(all_posts, 10)
