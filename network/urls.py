@@ -14,7 +14,6 @@ urlpatterns = [
     path("following", views.following, name="following"),
     path("saveEditedPost/<int:id>", views.save_edited_post, name="save_edited_post"),
     path("liked_posts/<str:path>", views.liked_posts, name="liked_posts"),
-    path("liked/<int:id>", views.liked, name="liked"),
-    
+    path("liked/<int:id>", views.liked, name="liked")
 ]
 
